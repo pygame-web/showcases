@@ -1,11 +1,23 @@
-<html><head><meta charset=utf-8></head><script src=/pygbag/0.0/pythons.js data-os=vtx,fs,gui,smb data-LINES=48 data-CONSOLE=1 data-python=cpython3.12 type=module id=__main__ async defer>#<!--
+<html><head><meta charset=utf-8></head><script src=/pygbag/0.0/pythons.js data-os=vtx,fs,gui,smb data-LINES=25 data-CONSOLE=7 data-python=cpython3.13 type=module id=__main__ async defer>#<!--
 import sys, asyncio, platform, embed
 
 if len(sys.argv) and not sys.argv[0]:
+    import pygbag_ui as ui
+    import rich
+
     async def main():
+        ui.clear()
+        ui.goto_xy(1,1)
         platform.window.debug()
         shell.interactive(prompt=True)
         # CSI("?1002h","?1006h")
+        for subdir in ["tests","users","org"]:
+            async with platform.fopen('https://api.github.com/repos/pygame-web/showcases/contents/tests','r') as api_result:
+                git = json.load(api_result)
+            for elem in git:
+                print("_"*40)
+                print(elem["path"], elem["git_url"])
+
 
     asyncio.run(main())
 else:
